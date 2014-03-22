@@ -1,30 +1,31 @@
-Proyecto de  Ejemplo
+Be My Ear
 ====================
 
 Componentes del Equipo
 ---------------------
 
-(Máximo 4 integrantes por grupo)
-
-+ Nombre del integrante #1 (Desarrollo y Sistemas)
-+ Nombre del integrante #4 (Sistemas)
-+ Nombre del integrante #2 (Diseñador)
-+ Nombre del integrante #3 (Maquetadora)
++ Jorge García Hinestrosa (Desarrollo y Diseño)
++ Sergio Revueltas Estrada (Desarrollo y Diseño)
++ Miguel Vicente Linares (Desarrollo y Diseño)
++ Antonio Vicente Martín (Desarrollo y Diseño)
 
 Descripción
 -------------
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+**Be My Ear** es una aplicación para Android que permite identificar muestras de audio haciendo uso del micrófono del dispositivo.
+El usuario podrá grabar muestras de audio como un timbre o la alarma del microondas y **Be My Ear** detectará cuando se produzca dicho sonido y mostrará una alerta visual.
+
+Con esta aplicación se pretende proporcionar una ayuda a las personas con discapacidad auditiva, facilitándoles el uso de dispositivos que no han sido creados originalmente pensando en dichas personas.
 
 Estado del desarrollo actual
 ----------------------------
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Pre-Alpha.
 
 Especificaciones Técnicas
 --------------------------
-+ Lenguajes de programación utilizados
-+ Sistema de bases de datos
-+ Etc...
++ Android
++ Java
++ SQLite
 
 Licencia
 ---------
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+[GPLv3](http://www.gnu.org/licenses/gpl-3.0.html).
