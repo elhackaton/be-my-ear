@@ -15,67 +15,70 @@ import com.chustaware.R;
 
 public class MainActivity extends FragmentActivity {
 
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
-    private ViewPager mPager;
+	private static final int LOCATION_AUDIO_RECORDING_FRAGMENT = 0;
+	private static final int LOCATION_AUDIO_LISTENING_FRAGMENT = 1;
+	private static final int LOCATION_SAMPLES_LIST_FRAGMENT = 2;
+	private static final int LOCATION_DEFAULT_FRAGMENT = LOCATION_AUDIO_LISTENING_FRAGMENT;
 
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
+	private ViewPager pager;
+	private PagerAdapter pagerAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_slider);
-        
-        List<Fragment> fragments = new Vector<Fragment>();
-        fragments.add(Fragment.instantiate(this, AudioRecordingFragment.class.getName()));
-        fragments.add(Fragment.instantiate(this, AudioListeningFragment.class.getName()));
-        fragments.add(Fragment.instantiate(this, SamplesListFragment.class.getName()));
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_slider);
 
+		List<Fragment> fragments = createFragments();
+		pager = (ViewPager) findViewById(R.id.slider);
+		pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), fragments);
+		pager.setAdapter(pagerAdapter);
+		pager.setCurrentItem(LOCATION_DEFAULT_FRAGMENT);
+	}
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.slider);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), fragments);
-        mPager.setAdapter(mPagerAdapter);
-    }
+	@Override
+	public void onBackPressed() {
+		if (pager.getCurrentItem() == LOCATION_DEFAULT_FRAGMENT) {
+			// If the user is currently looking at the default fragment, allow the system to handle the Back button.
+			// This calls finish() on this activity and pops the back stack.
+			super.onBackPressed();
+		} else {
+			// Otherwise, select the default fragment.
+			pager.setCurrentItem(LOCATION_DEFAULT_FRAGMENT);
+		}
+	}
 
-    @Override
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
-    }
+	private List<Fragment> createFragments() {
+		List<Fragment> fragments = new Vector<Fragment>();
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-    	
-    	private List<Fragment> fragments;
-    	
-        public ScreenSlidePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
-            this.fragments = fragments;
-        }
+		Fragment audioRecordingFragment = Fragment.instantiate(this, AudioRecordingFragment.class.getName());
+		fragments.add(LOCATION_AUDIO_RECORDING_FRAGMENT, audioRecordingFragment);
 
-        @Override
-        public Fragment getItem(int position) {
-        	return fragments.get(position);
-        }
+		Fragment audioListeningFragment = Fragment.instantiate(this, AudioListeningFragment.class.getName());
+		fragments.add(LOCATION_AUDIO_LISTENING_FRAGMENT, audioListeningFragment);
 
-        @Override
-        public int getCount() {
-        	return this.fragments.size();
-        }
-    }
+		Fragment samplesListFragment = Fragment.instantiate(this, SamplesListFragment.class.getName());
+		fragments.add(LOCATION_SAMPLES_LIST_FRAGMENT, samplesListFragment);
+
+		return fragments;
+	}
+
+	private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
+		private List<Fragment> fragments;
+
+		public ScreenSlidePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+			super(fm);
+			this.fragments = fragments;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			return fragments.get(position);
+		}
+
+		@Override
+		public int getCount() {
+			return this.fragments.size();
+		}
+	}
 }
