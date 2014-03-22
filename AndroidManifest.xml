@@ -27,6 +27,7 @@
         </activity>
         <activity android:name="com.chustaware.bemyear.audio.AudioRecordingHandler" >
         </activity>
+        <service android:name="com.chustaware.bemyear.AudioRecordingIntentService"></service>
     </application>
 
 </manifest>
