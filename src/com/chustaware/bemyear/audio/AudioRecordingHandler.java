@@ -4,18 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;
-import android.widget.Button;
 
-import com.chustaware.R;
-
-public class AudioRecordingHandler extends Activity {
+public class AudioRecordingHandler {
 
 	private static final int RECORDER_SAMPLERATE = 8000;
 	private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
@@ -27,35 +21,6 @@ public class AudioRecordingHandler extends Activity {
 	private AudioRecord recorder = null;
 	private Thread recordingThread = null;
 	private boolean isRecording = false;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_audio_record);
-
-		setButtonClickListeners();
-		enableButtons(false);
-	}
-
-	private void setButtonClickListeners() {
-		View.OnClickListener btnClick = new ButtonClickListener();
-
-		Button btnStart = (Button) findViewById(R.id.btnStart);
-		btnStart.setOnClickListener(btnClick);
-
-		Button btnStop = (Button) findViewById(R.id.btnStop);
-		btnStop.setOnClickListener(btnClick);
-	}
-
-	private void setEnabledButton(int id, boolean enabled) {
-		Button btn = (Button) findViewById(id);
-		btn.setEnabled(enabled);
-	}
-
-	private void enableButtons(boolean isRecording) {
-		setEnabledButton(R.id.btnStart, !isRecording);
-		setEnabledButton(R.id.btnStop, isRecording);
-	}
 
 	private void startRecording() {
 		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, RECORDER_SAMPLERATE, RECORDER_CHANNELS,
@@ -124,24 +89,4 @@ public class AudioRecordingHandler extends Activity {
 		}
 	}
 
-	private class ButtonClickListener implements View.OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.btnStart: {
-				enableButtons(true);
-				startRecording();
-				break;
-			}
-			case R.id.btnStop: {
-				enableButtons(false);
-				stopRecording();
-				break;
-			}
-			default:
-				break;
-			}
-		}
-	};
 }
