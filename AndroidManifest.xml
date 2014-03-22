@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.chustaware.bemyear.AudioRecordingActivity" >
+        <activity android:name="com.chustaware.bemyear.audio.AudioRecordingHandler" >
         </activity>
     </application>
 

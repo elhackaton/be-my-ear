@@ -1,4 +1,4 @@
-package com.chustaware.bemyear;
+package com.chustaware.bemyear.audio;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,7 +15,7 @@ import android.widget.Button;
 
 import com.chustaware.R;
 
-public class AudioRecordingActivity extends Activity {
+public class AudioRecordingHandler extends Activity {
 
 	private static final int RECORDER_SAMPLERATE = 8000;
 	private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
