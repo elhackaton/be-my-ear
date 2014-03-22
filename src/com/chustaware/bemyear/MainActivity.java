@@ -1,4 +1,6 @@
-package com.chustaware;
+package com.chustaware.bemyear;
+
+import com.chustaware.R;
 
 import android.os.Bundle;
 import android.app.Activity;
