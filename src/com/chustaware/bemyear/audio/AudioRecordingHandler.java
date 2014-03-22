@@ -1,13 +1,8 @@
 package com.chustaware.bemyear.audio;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.os.Environment;
 
 public class AudioRecordingHandler {
 
@@ -19,23 +14,15 @@ public class AudioRecordingHandler {
 			RECORDER_AUDIO_ENCODING);
 
 	private AudioRecord recorder = null;
-	private Thread recordingThread = null;
 	private boolean isRecording = false;
 
-	private void startRecording() {
+	public void startRecording() {
 		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, RECORDER_SAMPLERATE, RECORDER_CHANNELS,
 				RECORDER_AUDIO_ENCODING, BUFFER_SIZE * BYTES_PER_SAMPLE);
 
 		recorder.startRecording();
 		isRecording = true;
-		recordingThread = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				writeAudioDataToFile();
-			}
-		}, "AudioRecorder Thread");
-		recordingThread.start();
 	}
 
 	private static byte[] shortArrayToByteArray(short[] sData) {
@@ -49,44 +36,22 @@ public class AudioRecordingHandler {
 		return bytes;
 	}
 
-	private void writeAudioDataToFile() {
-		String filePath = Environment.getExternalStorageDirectory().getPath() + "/voice8K16bitmono.pcm";
-		short sData[] = new short[BUFFER_SIZE];
-
-		FileOutputStream os = null;
-		try {
-			os = new FileOutputStream(filePath);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		while (isRecording) {
-			recorder.read(sData, 0, BUFFER_SIZE);
-			try {
-				// // writes the data to file from buffer
-				// // stores the voice buffer
-				byte bData[] = shortArrayToByteArray(sData);
-				os.write(bData, 0, BUFFER_SIZE * BYTES_PER_SAMPLE);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			os.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void stopRecording() {
+	public void stopRecording() {
 		// stops the recording activity
 		if (null != recorder) {
 			isRecording = false;
 			recorder.stop();
 			recorder.release();
 			recorder = null;
-			recordingThread = null;
 		}
+	}
+
+	public boolean read(byte[] audioData) {
+		if (isRecording) {
+			recorder.read(audioData, 0, audioData.length);
+			return true;
+		}
+		return false;
 	}
 
 }
