@@ -4,7 +4,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
-public class AudioRecordingHandler {
+public class AudioRecordingManager {
 
 	private static final int RECORDER_SAMPLERATE = 8000;
 	private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
