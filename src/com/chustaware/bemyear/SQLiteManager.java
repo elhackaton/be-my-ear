@@ -175,7 +175,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
 		}
 		String out = "";
 		for (int i = 0; i < samples.size(); i++) {
-			out += samples.get(i) + ", ";
+			out += "\n";
+			for (int j = 0; j < samples.get(i).getPattern().size(); j++) {
+				out += samples.get(i).getPattern().get(j) + ", ";
+			}
 		}
 		return out;
 	}
