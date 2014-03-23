@@ -26,7 +26,7 @@ public class AudioListeningFragment extends Fragment {
 	private boolean mBound;
 	private ServiceConnection serviceConnection;
 	private AudioRecordingIntentService mService;
-	private boolean standby;
+	private boolean standby, listening;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,18 +61,19 @@ public class AudioListeningFragment extends Fragment {
 	}
 
 	private void startListening() {
-		Log.d(getClass().getSimpleName(), "Start recording");
+		Log.d(getClass().getSimpleName(), "Start listening");
 		Intent msgIntent = new Intent(getActivity(), AudioRecordingIntentService.class);
 		msgIntent.putExtra("action", "listen");
 		getActivity().startService(msgIntent);
 
 		if (!mBound) {
+			mBound = true;
 			getActivity().bindService(msgIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 		}
 	}
 
 	private void stopListening() {
-		Log.d(getClass().getSimpleName(), "Stop recording");
+		Log.d(getClass().getSimpleName(), "Stop listening");
 		Messenger serviceMessenger = mService.getMessenger();
 		Message msg = Message.obtain(null, AudioRecordingIntentService.MSG_STOP);
 		try {
@@ -88,9 +89,11 @@ public class AudioListeningFragment extends Fragment {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN && !listening) {
+					listening = true;
 					startListening();
-				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+				} else if (event.getAction() == MotionEvent.ACTION_DOWN && listening) {
+					listening = false;
 					stopListening();
 				}
 				return false;

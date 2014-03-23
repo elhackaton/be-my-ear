@@ -21,13 +21,13 @@ public class AudioRecordingIntentService extends IntentService {
 	public static final String ACTION_PROGRESS = AudioRecordingIntentService.class.getName() + "ACTION_PROGRESS";
 	public static final String ACTION_FINISH = AudioRecordingIntentService.class.getName() + "ACTION_FINISH";
 	public static final int MSG_STOP = 0;
-	private static final int THREASHOLD = 3;
+	private static final int THREASHOLD = 1;
 
 	private boolean recording;
 	private Messenger messenger;
 	private AudioDataManager audioDataManager;
 	private final IBinder binder = new LocalBinder();
-	
+
 	private SQLiteManager sqLiteManager;
 
 	public AudioRecordingIntentService() {
@@ -55,7 +55,7 @@ public class AudioRecordingIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// android.os.Debug.waitForDebugger();
-		
+
 		sqLiteManager = new SQLiteManager(this);
 		String action = intent.getStringExtra("action");
 
@@ -76,24 +76,24 @@ public class AudioRecordingIntentService extends IntentService {
 		audioDataManager.startCapturingData();
 		double temp = 0.0;
 		while (recording) {
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 10; i++) {
 				temp = audioDataManager.computePitchAudioData();
 				if (temp >= 0) {
 					pitchs.add(temp);
 				}
 				Log.v("fft", "Pitch: " + temp);
 			}
+
+			readFromDatabase(reference);
+
+			if (matchSignalWithReference(reference, pitchs)) {
+				Log.v("match", "IT WORKSS!!");
+			}
 		}
 
-		readFromDatabase(reference);
-
-		if (matchSignalWithReference(reference, pitchs)) {
-
-		}
 	}
 
 	private void readFromDatabase(ArrayList<Double> reference) {
-		SQLiteManager sqLiteManager = new SQLiteManager(this);
 		Sample s = sqLiteManager.getSamples().get(0);
 		reference.clear();
 		for (int i = 0; i < s.getPattern().size(); i++) {
@@ -156,10 +156,22 @@ public class AudioRecordingIntentService extends IntentService {
 		ArrayList<Integer> indexSignal = new ArrayList<Integer>();
 
 		for (int i = 0; i < reference.size(); i++) {
+			if (histogramReference.get(reference.get(i)) == null) {
+				if (reference.get(i) > 0) {
+					histogramReference.put(reference.get(i), 1);
+				}
+				continue;
+			}
 			histogramReference.put(reference.get(i), histogramReference.get(reference.get(i)) + 1);
 		}
 
 		for (int i = 0; i < signal.size(); i++) {
+			if (histogramSignal.get(signal.get(i)) == null) {
+				if (signal.get(i) > 0) {
+					histogramSignal.put(signal.get(i), 1);
+				}
+				continue;
+			}
 			histogramSignal.put(signal.get(i), histogramSignal.get(signal.get(i)) + 1);
 		}
 
