@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     	android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"></LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        
+    <ListView
+        android:layout_width="fill_parent" 
+	  	android:layout_height="fill_parent" 
+	  	android:id="@+id/samplesList"
+	  	android:divider="#000000"
+	  	android:dividerHeight="1dp"
+	  	android:cacheColorHint="#00000000"
+	  	android:listSelector="@android:color/transparent"
+	  	android:fadeScrollbars="false"
+      >
+        
+    </ListView>
+    
+    
+</RelativeLayout>
+
+        
