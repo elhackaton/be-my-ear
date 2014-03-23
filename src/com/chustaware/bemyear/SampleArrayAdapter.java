@@ -19,7 +19,7 @@ public class SampleArrayAdapter extends ArrayAdapter<Sample> {
 	private Context context;
 
 	public SampleArrayAdapter(Context context, List<Sample> samplesList) {
-		super(context, R.layout.fila_menu_principal, R.id.samplesList, samplesList);
+		super(context, R.layout.row_main_menu, R.id.samplesList, samplesList);
 
 		this.context = context;
 		inflater = LayoutInflater.from(context);
@@ -34,7 +34,7 @@ public class SampleArrayAdapter extends ArrayAdapter<Sample> {
 
 		if (convertView == null) {
 			// La view se crea a partir del xml que contiene la estructura de las filas de nuestra ListView
-			convertView = inflater.inflate(R.layout.fila_menu_principal, null);
+			convertView = inflater.inflate(R.layout.row_main_menu, null);
 
 			// Guardamos las views hijas de convertView en el objeto AlarmaViewHolder
 			sampleHolder = new SampleViewHolder();
