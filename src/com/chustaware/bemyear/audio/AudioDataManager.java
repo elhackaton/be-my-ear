@@ -16,9 +16,9 @@ public class AudioDataManager {
 		Window.computeCoefficients(1, window);
 	}
 
-	public void processAudioData() {
+	public double computePitchAudioData() {
 		audioRecordingManager.read(audioSamples);
 		FFTConverter.fowardConvert(audioSamples, freq, window);
-		AudioAnalysisManager.detectPitchFrequencyDomain(freq, 10.0);
+		return AudioAnalysisManager.detectPitchFrequencyDomain(freq, 10.0);
 	}
 }
