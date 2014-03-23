@@ -6,11 +6,11 @@ import android.media.MediaRecorder;
 
 public class AudioRecordingManager {
 
-	private static final int RECORDER_SAMPLERATE = 8000;
-	private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
-	private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
-	private static final int BYTES_PER_SAMPLE = 2; // 2 bytes in 16bit format
-	private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE, RECORDER_CHANNELS,
+	public static final int RECORDER_SAMPLERATE = 8000;
+	public static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
+	public static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+	public static final int BYTES_PER_SAMPLE = 2; // 2 bytes in 16bit format
+	public static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE, RECORDER_CHANNELS,
 			RECORDER_AUDIO_ENCODING);
 
 	private AudioRecord recorder = null;

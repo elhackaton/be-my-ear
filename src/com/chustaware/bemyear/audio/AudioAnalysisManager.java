@@ -11,13 +11,17 @@ public class AudioAnalysisManager {
 	 * @return pitch
 	 */
 	public static double detectPitchFrequencyDomain(double[] freq, double threashold) {
-		int max = -1;
+		int max = 0;
 
 		for (int i = 0; i < freq.length; i++) {
-			max = freq[i] > threashold ? i : max;
+			if (freq[i] > threashold) {
+				if (freq[i] > freq[max]) {
+					max = i;
+				}
+			}
 		}
 
-		return 0.0;
+		return max;
 	}
 
 	public static double detectPitchZeroCrossing(double[] time) {

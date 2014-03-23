@@ -19,6 +19,15 @@ public class AudioDataManager {
 	public double computePitchAudioData() {
 		audioRecordingManager.read(audioSamples);
 		FFTConverter.fowardConvert(audioSamples, freq, window);
-		return AudioAnalysisManager.detectPitchFrequencyDomain(freq, 10.0);
+		return AudioAnalysisManager.detectPitchFrequencyDomain(freq, 10.0) * audioRecordingManager.RECORDER_SAMPLERATE
+				/ (double) (SAMPLES_BUFFER);
+	}
+
+	public void startCapturingData() {
+		audioRecordingManager.startRecording();
+	}
+
+	public void stopCapturingData() {
+		audioRecordingManager.stopRecording();
 	}
 }
