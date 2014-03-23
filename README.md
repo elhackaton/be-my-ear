@@ -26,6 +26,21 @@ Especificaciones Técnicas
 + Java
 + SQLite
 
+Instrucciones para trabajar en el proyecto
+------------------------------------------
+1. Clonar el repositorio:
+```
+git clone https://github.com/elhackaton/be-my-ear.git
+```
+o
+```
+git clone git@github.com:elhackaton/be-my-ear.git
+```
+2. Importar el proyecto BeMyEar en eclipse.
+3. Importar el proyecto BeMyEar/android-support-v7-appcompat en eclipse.
+
+Tras seguir estos pasos se debería poder compilar el proyecto sin problemas.
+
 Licencia
 ---------
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html).
