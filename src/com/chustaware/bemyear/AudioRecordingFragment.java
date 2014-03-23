@@ -22,7 +22,7 @@ import com.chustaware.R;
 import com.chustaware.bemyear.AudioRecordingIntentService.LocalBinder;
 
 public class AudioRecordingFragment extends Fragment {
-
+	
 	private AudioRecordingIntentService mService;
 	private boolean mBound;
 	private ServiceConnection serviceConnection;
