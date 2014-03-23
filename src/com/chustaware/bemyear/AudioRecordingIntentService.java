@@ -27,6 +27,8 @@ public class AudioRecordingIntentService extends IntentService {
 	private Messenger messenger;
 	private AudioDataManager audioDataManager;
 	private final IBinder binder = new LocalBinder();
+	
+	private SQLiteManager sqLiteManager;
 
 	public AudioRecordingIntentService() {
 		super(AudioRecordingIntentService.class.getSimpleName());
@@ -53,7 +55,8 @@ public class AudioRecordingIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// android.os.Debug.waitForDebugger();
-
+		
+		sqLiteManager = new SQLiteManager(this);
 		String action = intent.getStringExtra("action");
 
 		if (action.equals("record")) {
@@ -64,6 +67,7 @@ public class AudioRecordingIntentService extends IntentService {
 	}
 
 	private void startRecording() {
+		sqLiteManager.deleteSampleTable();
 		ArrayList<Double> pitchs = new ArrayList<Double>();
 		recording = true;
 		audioDataManager.startCapturingData();

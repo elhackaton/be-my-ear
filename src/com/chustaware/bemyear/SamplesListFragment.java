@@ -34,7 +34,7 @@ public class SamplesListFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		samplesList = sqLiteManager.getSamples();
 		if (samplesList != null) {
 			sampleAdapter = new SampleArrayAdapter(getActivity(), samplesList);
