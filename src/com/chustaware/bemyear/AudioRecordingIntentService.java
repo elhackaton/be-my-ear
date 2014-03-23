@@ -21,7 +21,7 @@ public class AudioRecordingIntentService extends IntentService {
 	public static final String ACTION_PROGRESS = AudioRecordingIntentService.class.getName() + "ACTION_PROGRESS";
 	public static final String ACTION_FINISH = AudioRecordingIntentService.class.getName() + "ACTION_FINISH";
 	public static final int MSG_STOP = 0;
-	private static final int THREASHOLD = 3;
+	private static final int THREASHOLD_MATCHING = 3;
 
 	private boolean recording;
 	private Messenger messenger;
@@ -30,6 +30,7 @@ public class AudioRecordingIntentService extends IntentService {
 
 	public AudioRecordingIntentService() {
 		super(AudioRecordingIntentService.class.getSimpleName());
+		// Log.v("sqlite", new SQLiteManager(this).toString());
 		recording = false;
 		audioDataManager = new AudioDataManager();
 		messenger = new Messenger(new Handler() {
@@ -52,7 +53,7 @@ public class AudioRecordingIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		// android.os.Debug.waitForDebugger();
+		android.os.Debug.waitForDebugger();
 
 		String action = intent.getStringExtra("action");
 
@@ -70,7 +71,7 @@ public class AudioRecordingIntentService extends IntentService {
 		double temp = 0.0;
 		while (recording) {
 			temp = audioDataManager.computePitchAudioData();
-			if (temp >= 0) {
+			if (temp > 0) {
 				pitchs.add(temp);
 			}
 			Log.v("fft", "Pitch: " + temp);
@@ -146,7 +147,7 @@ public class AudioRecordingIntentService extends IntentService {
 		Collections.sort(indexReference);
 		Collections.sort(indexSignal);
 
-		for (int i = 0; i < indexReference.size() && i < indexSignal.size() && i < THREASHOLD; i++) {
+		for (int i = 0; i < indexReference.size() && i < indexSignal.size() && i < THREASHOLD_MATCHING; i++) {
 			if (modeReference.get(indexReference.get(i)) != modeSignal.get(indexSignal.get(i))) {
 				return false;
 			}
