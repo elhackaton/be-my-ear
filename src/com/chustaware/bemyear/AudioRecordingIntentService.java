@@ -48,7 +48,7 @@ public class AudioRecordingIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		android.os.Debug.waitForDebugger();
+		// android.os.Debug.waitForDebugger();
 
 		String action = intent.getStringExtra("action");
 
@@ -63,10 +63,17 @@ public class AudioRecordingIntentService extends IntentService {
 		ArrayList<Double> pitchs = new ArrayList<Double>();
 		recording = true;
 		audioDataManager.startCapturingData();
-
+		double temp = 0.0;
 		while (recording) {
-			Log.v("fft", "Pitch: " + audioDataManager.computePitchAudioData());
+			temp = audioDataManager.computePitchAudioData();
+			pitchs.add(temp);
+			Log.v("fft", "Pitch: " + temp);
 		}
+		String out = "";
+		for (int i = 0; i < pitchs.size(); i++) {
+			out += pitchs.get(i).toString() + ", ";
+		}
+		Log.v("pitch", out);
 
 		// TODO: Write into data base
 
