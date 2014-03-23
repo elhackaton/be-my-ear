@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="BeMyEarActionBarTheme"
+           parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/BeMyEarActionBar</item>
+        
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="BeMyEarActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+
+        <!-- Support library compatibility -->
+        <item name="background">@color/navy_blue</item>
+    </style>
+    
+</resources>
