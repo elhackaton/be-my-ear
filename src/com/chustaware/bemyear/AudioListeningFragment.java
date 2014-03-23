@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -49,9 +48,9 @@ public class AudioListeningFragment extends Fragment {
 		};
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_audio_listening, container, false);
-		
+
 		standby = true;
-		
+
 		return rootView;
 	}
 
@@ -87,30 +86,12 @@ public class AudioListeningFragment extends Fragment {
 		Button btnListen = (Button) getActivity().findViewById(R.id.btnListen);
 		btnListen.setOnTouchListener(new OnTouchListener() {
 
-			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				Drawable img = null;
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					if (standby) {
-						img = getResources().getDrawable(R.drawable.listen_button_standby_pressed);
-					} else {
-						img = getResources().getDrawable(R.drawable.listen_button_selected);
-					}
-					startListening();
+					// startListening();
 				} else if (event.getAction() == MotionEvent.ACTION_UP) {
-					if (standby) {
-						img = getResources().getDrawable(R.drawable.listen_button_standby_normal);
-						startListening();
-						standby = false;
-					} else {
-						img = getResources().getDrawable(R.drawable.listen_button_normal);
-						stopListening();
-						standby = true;
-					}
-				}
-				if (img != null) {
-					v.setBackgroundDrawable(img);					
+					// stopListening();
 				}
 				return false;
 			}
