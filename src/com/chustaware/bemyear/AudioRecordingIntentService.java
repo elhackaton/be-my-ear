@@ -30,7 +30,7 @@ public class AudioRecordingIntentService extends IntentService {
 
 	public AudioRecordingIntentService() {
 		super(AudioRecordingIntentService.class.getSimpleName());
-		// Log.v("sqlite", new SQLiteManager(this).toString());
+
 		recording = false;
 		audioDataManager = new AudioDataManager();
 		messenger = new Messenger(new Handler() {
@@ -54,6 +54,8 @@ public class AudioRecordingIntentService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		android.os.Debug.waitForDebugger();
+
+		Log.v("sqlite", new SQLiteManager(this).toString());
 
 		String action = intent.getStringExtra("action");
 
