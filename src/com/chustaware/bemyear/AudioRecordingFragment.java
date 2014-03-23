@@ -57,7 +57,7 @@ public class AudioRecordingFragment extends Fragment {
 	}
 
 	private void setButtonClickListeners() {
-		Button btnRecord = (Button) getActivity().findViewById(R.id.btnListen);
+		Button btnRecord = (Button) getActivity().findViewById(R.id.btnRecord);
 		btnRecord.setOnTouchListener(new OnTouchListener() {
 
 			@SuppressWarnings("deprecation")
