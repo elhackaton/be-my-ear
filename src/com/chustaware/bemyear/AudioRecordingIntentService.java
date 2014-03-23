@@ -1,6 +1,9 @@
 package com.chustaware.bemyear;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -18,6 +21,7 @@ public class AudioRecordingIntentService extends IntentService {
 	public static final String ACTION_PROGRESS = AudioRecordingIntentService.class.getName() + "ACTION_PROGRESS";
 	public static final String ACTION_FINISH = AudioRecordingIntentService.class.getName() + "ACTION_FINISH";
 	public static final int MSG_STOP = 0;
+	private static final int THREASHOLD = 3;
 
 	private boolean recording;
 	private Messenger messenger;
@@ -98,5 +102,54 @@ public class AudioRecordingIntentService extends IntentService {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		return super.onStartCommand(intent, flags, startId);
+	}
+
+	public boolean matchSignalWithReference(ArrayList<Double> reference, ArrayList<Double> signal) {
+		HashMap<Double, Integer> histogramReference = new HashMap<Double, Integer>();
+		HashMap<Double, Integer> histogramSignal = new HashMap<Double, Integer>();
+		HashMap<Integer, ArrayList<Double>> modeReference = new HashMap<Integer, ArrayList<Double>>();
+		HashMap<Integer, ArrayList<Double>> modeSignal = new HashMap<Integer, ArrayList<Double>>();
+
+		ArrayList<Integer> indexReference = new ArrayList<Integer>();
+		ArrayList<Integer> indexSignal = new ArrayList<Integer>();
+
+		for (int i = 0; i < reference.size(); i++) {
+			histogramReference.put(reference.get(i), histogramReference.get(reference.get(i)) + 1);
+		}
+
+		for (int i = 0; i < signal.size(); i++) {
+			histogramSignal.put(signal.get(i), histogramSignal.get(signal.get(i)) + 1);
+		}
+
+		ArrayList<Double> freqs = null;
+
+		for (Entry<Double, Integer> entry : histogramReference.entrySet()) {
+			if ((freqs = modeReference.get(entry.getValue())) == null) {
+				indexReference.add(entry.getValue());
+				freqs = new ArrayList<Double>();
+				modeReference.put(entry.getValue(), freqs);
+			}
+			freqs.add(entry.getKey());
+		}
+
+		for (Entry<Double, Integer> entry : histogramSignal.entrySet()) {
+			if ((freqs = modeSignal.get(entry.getValue())) == null) {
+				indexSignal.add(entry.getValue());
+				freqs = new ArrayList<Double>();
+				modeSignal.put(entry.getValue(), freqs);
+			}
+			freqs.add(entry.getKey());
+		}
+
+		Collections.sort(indexReference);
+		Collections.sort(indexSignal);
+
+		for (int i = 0; i < indexReference.size() && i < indexSignal.size() && i < THREASHOLD; i++) {
+			if (modeReference.get(indexReference.get(i)) != modeSignal.get(indexSignal.get(i))) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
