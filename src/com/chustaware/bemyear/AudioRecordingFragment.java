@@ -1,5 +1,6 @@
 package com.chustaware.bemyear;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -30,14 +31,17 @@ public class AudioRecordingFragment extends Fragment {
 		Button btnRecord = (Button) getActivity().findViewById(R.id.btnRecord);
 		btnRecord.setOnTouchListener(new OnTouchListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					Drawable imgRecordButtonPressed = getResources().getDrawable(R.drawable.record_button_pressed);
+					v.setBackgroundDrawable(imgRecordButtonPressed);
 					startRecording();
-					return true;
 				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					Drawable imgRecordButtonNormal = getResources().getDrawable(R.drawable.record_button_normal);
+					v.setBackgroundDrawable(imgRecordButtonNormal);
 					stopRecording();
-					return true;
 				}
 				return false;
 			}
