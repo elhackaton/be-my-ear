@@ -86,7 +86,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
 	}
 
 	private Sample getSample(Cursor c) {
-		return new Sample(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), (c.getInt(4) == 1) ? true : false);
+		return new Sample(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), (c.getInt(4) == 1) ? true
+				: false);
 	}
 
 	public ArrayList<Sample> getSamples() {
@@ -164,5 +165,18 @@ public class SQLiteManager extends SQLiteOpenHelper {
 		}
 
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		ArrayList<Sample> samples = getSamples();
+		if (samples == null) {
+			return "Error SQLITE";
+		}
+		String out = "";
+		for (int i = 0; i < samples.size(); i++) {
+			out += samples.get(i) + ", ";
+		}
+		return out;
 	}
 }
