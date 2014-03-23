@@ -89,9 +89,9 @@ public class AudioListeningFragment extends Fragment {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					// startListening();
+					startListening();
 				} else if (event.getAction() == MotionEvent.ACTION_UP) {
-					// stopListening();
+					stopListening();
 				}
 				return false;
 			}

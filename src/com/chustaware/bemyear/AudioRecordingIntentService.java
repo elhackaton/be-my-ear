@@ -59,8 +59,44 @@ public class AudioRecordingIntentService extends IntentService {
 		if (action.equals("record")) {
 			startRecording();
 		}
+		if (action.equals("listen")) {
+			startListening();
+		}
 
 		audioDataManager.stopCapturingData();
+	}
+
+	private void startListening() {
+		ArrayList<Double> pitchs = new ArrayList<Double>();
+		ArrayList<Double> reference = new ArrayList<Double>();
+		recording = true;
+		audioDataManager.startCapturingData();
+		double temp = 0.0;
+		while (recording) {
+			for (int i = 0; i < 20; i++) {
+				temp = audioDataManager.computePitchAudioData();
+				if (temp >= 0) {
+					pitchs.add(temp);
+				}
+				Log.v("fft", "Pitch: " + temp);
+			}
+		}
+
+		readFromDatabase(reference);
+
+		if (matchSignalWithReference(reference, pitchs)) {
+
+		}
+	}
+
+	private void readFromDatabase(ArrayList<Double> reference) {
+		SQLiteManager sqLiteManager = new SQLiteManager(this);
+		Sample s = sqLiteManager.getSamples().get(0);
+		reference.clear();
+		for (int i = 0; i < s.getPattern().size(); i++) {
+			reference.add(s.getPattern().get(i));
+		}
+		// TODO: Get all samples
 	}
 
 	private void startRecording() {
