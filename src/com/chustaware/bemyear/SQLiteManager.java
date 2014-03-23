@@ -29,9 +29,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
 		// TODO Change type of pattern
 		String createTableSample = "CREATE TABLE " + TABLE_SAMPLE + "(" +
 				"id INTEGER PRIMARY KEY NOT NULL, " +
-				"name VARCHAR(255), " +
-				"icon VARCHAR(30), " +
-				"pattern VARCHAR(30)," +
+				"name TEXT, " +
+				"icon TEXT, " +
+				"pattern TEXT," +
 				"enabled BOOLEAN)";
 
 		String createTableDate = "CREATE TABLE " + TABLE_DATE + "(" +
@@ -58,7 +58,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 			ContentValues values = new ContentValues();
 			values.put("name", sample.getName());
 			values.put("icon", sample.getIcon());
-			values.put("pattern", sample.getPattern());
+			values.put("pattern", sample.getPatternAsString());
 			values.put("enabled", sample.isEnabled() ? 1 : 0);
 
 			inserted = db.insert(TABLE_SAMPLE, null, values);
@@ -86,8 +86,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 	}
 
 	private Sample getSample(Cursor c) {
-		return new Sample(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), (c.getInt(4) == 1) ? true
-				: false);
+		return new Sample(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), (c.getInt(4) == 1) ? true : false);
 	}
 
 	public ArrayList<Sample> getSamples() {
@@ -136,7 +135,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 		ContentValues newValues = new ContentValues();
 		newValues.put("name", sample.getName());
 		newValues.put("icon", sample.getIcon());
-		newValues.put("pattern", sample.getPattern());
+		newValues.put("pattern", sample.getPatternAsString());
 		newValues.put("enabled", sample.isEnabled() ? 1 : 0);
 		db.update(TABLE_SAMPLE, newValues, "id=" + sample.getId(), null);
 		db.close();

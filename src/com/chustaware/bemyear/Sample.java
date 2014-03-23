@@ -1,19 +1,33 @@
 package com.chustaware.bemyear;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class Sample {
 	
 	private int id;
 	private String name;
-	private String icon; // TODO change type?
-	private String pattern; //TODO change type
+	private String icon;
+	private ArrayList<Double> pattern;
 	private boolean enabled;
+	
+	public Sample(int id, String nombre, String icono, ArrayList<Double> pattern, boolean enabled) {
+		this.id = id;
+		this.name = nombre;
+		this.icon = icono;
+		this.pattern = pattern;
+		this.enabled = enabled;
+	}
 	
 	public Sample(int id, String nombre, String icono, String pattern, boolean enabled) {
 		this.id = id;
 		this.name = nombre;
 		this.icon = icono;
-		this.pattern = pattern;
+		this.pattern = stringToArrayList(pattern);
 		this.enabled = enabled;
 	}
 
@@ -41,11 +55,52 @@ public class Sample {
 		this.icon = icon;
 	}
 
-	public String getPattern() {
+	public ArrayList<Double> getPattern() {
 		return pattern;
 	}
-
+	
+	public String getPatternAsString() {
+		return arrayListToString(this.pattern);
+	}
+	
 	public void setPattern(String pattern) {
+		this.pattern = stringToArrayList(pattern);	
+	}
+	
+	private String arrayListToString(ArrayList<Double> pattern) {
+		JSONObject json = new JSONObject();
+		
+		try {
+			json.put("pattern", new JSONArray(this.pattern));
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return "";
+		}
+		return json.toString();
+	}
+	
+	private ArrayList<Double> stringToArrayList(String pattern) {
+		
+		JSONObject json = null;
+		JSONArray items = null;
+		ArrayList<Double> doubles = null;
+		try {
+			json = new JSONObject(pattern);
+			items = json.optJSONArray("pattern");
+			doubles = new ArrayList<Double>();
+
+			for (int i=0; i<items.length(); i++) {
+				doubles.add(items.getDouble(i));
+			}
+			return doubles;
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void setPattern(ArrayList<Double> pattern) {
 		this.pattern = pattern;
 	}
 	

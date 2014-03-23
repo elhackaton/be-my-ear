@@ -15,6 +15,8 @@ import com.chustaware.R;
 
 public class AudioRecordingFragment extends Fragment {
 
+	private SQLiteManager sqLiteManager;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_audio_recording, container, false);
