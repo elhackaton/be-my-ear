@@ -1,27 +1,40 @@
 package com.chustaware.bemyear;
 
+import java.util.ArrayList;
+
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
+
+import com.chustaware.bemyear.audio.AudioDataManager;
 
 public class AudioRecordingIntentService extends IntentService {
 
 	public static final String ACTION_PROGRESS = AudioRecordingIntentService.class.getName() + "ACTION_PROGRESS";
 	public static final String ACTION_FINISH = AudioRecordingIntentService.class.getName() + "ACTION_FINISH";
+	public static final int MSG_STOP = 0;
 
+	private boolean recording;
 	private Messenger messenger;
+	private AudioDataManager audioDataManager;
+	private final IBinder binder = new LocalBinder();
 
 	public AudioRecordingIntentService() {
 		super(AudioRecordingIntentService.class.getSimpleName());
+		recording = false;
+		audioDataManager = new AudioDataManager();
 		messenger = new Messenger(new Handler() {
 
 			@Override
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
-				case 0:
-
+				case MSG_STOP:
+					recording = false;
 					break;
 
 				default:
@@ -35,31 +48,48 @@ public class AudioRecordingIntentService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		int iter = intent.getIntExtra("iteraciones", 0);
+		android.os.Debug.waitForDebugger();
 
-		for (int i = 1; i <= iter; i++) {
-			longRunningTask();
+		String action = intent.getStringExtra("action");
 
-			// Comunicamos el progreso
-			Intent bcIntent = new Intent();
-			bcIntent.setAction(ACTION_PROGRESS);
-			bcIntent.putExtra("progress", i * 10);
-			sendBroadcast(bcIntent);
+		if (action.equals("record")) {
+			startRecording();
 		}
 
-		Intent bcIntent = new Intent();
-		bcIntent.setAction(ACTION_FINISH);
-		sendBroadcast(bcIntent);
+		audioDataManager.stopCapturingData();
 	}
 
-	private void longRunningTask() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+	private void startRecording() {
+		ArrayList<Double> pitchs = new ArrayList<Double>();
+		recording = true;
+		audioDataManager.startCapturingData();
+
+		while (recording) {
+			Log.v("fft", "Pitch: " + audioDataManager.computePitchAudioData());
 		}
+
+		// TODO: Write into data base
+
 	}
 
 	public Messenger getMessenger() {
 		return messenger;
+	}
+
+	public class LocalBinder extends Binder {
+
+		public AudioRecordingIntentService getService() {
+			return AudioRecordingIntentService.this;
+		}
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return binder;
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		return super.onStartCommand(intent, flags, startId);
 	}
 }
