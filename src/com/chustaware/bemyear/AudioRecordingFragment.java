@@ -1,7 +1,14 @@
 package com.chustaware.bemyear;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +19,33 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.chustaware.R;
+import com.chustaware.bemyear.AudioRecordingIntentService.LocalBinder;
 
 public class AudioRecordingFragment extends Fragment {
-
-	private SQLiteManager sqLiteManager;
 	
+	private AudioRecordingIntentService mService;
+	private boolean mBound;
+	private ServiceConnection serviceConnection;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		serviceConnection = new ServiceConnection() {
+
+			@Override
+			public void onServiceDisconnected(ComponentName name) {
+				mBound = false;
+				mService = null;
+			}
+
+			@Override
+			public void onServiceConnected(ComponentName name, IBinder service) {
+				LocalBinder binder = (LocalBinder) service;
+				mService = binder.getService();
+				mBound = true;
+			}
+		};
+
+		this.mBound = false;
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_audio_recording, container, false);
 		return rootView;
 	}
@@ -52,10 +79,24 @@ public class AudioRecordingFragment extends Fragment {
 
 	private void startRecording() {
 		Log.d(getClass().getSimpleName(), "Start recording");
+		Intent msgIntent = new Intent(getActivity(), AudioRecordingIntentService.class);
+		msgIntent.putExtra("action", "record");
+		getActivity().startService(msgIntent);
+
+		if (!mBound) {
+			getActivity().bindService(msgIntent, serviceConnection, getActivity().BIND_AUTO_CREATE);
+		}
 	}
 
 	private void stopRecording() {
 		Log.d(getClass().getSimpleName(), "Stop recording");
-	}
+		Messenger serviceMessenger = mService.getMessenger();
+		Message msg = Message.obtain(null, AudioRecordingIntentService.MSG_STOP);
+		try {
+			serviceMessenger.send(msg);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 
+	}
 }
