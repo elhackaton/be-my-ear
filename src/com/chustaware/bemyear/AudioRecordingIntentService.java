@@ -70,7 +70,9 @@ public class AudioRecordingIntentService extends IntentService {
 		double temp = 0.0;
 		while (recording) {
 			temp = audioDataManager.computePitchAudioData();
-			pitchs.add(temp);
+			if (temp >= 0) {
+				pitchs.add(temp);
+			}
 			Log.v("fft", "Pitch: " + temp);
 		}
 		String out = "";
@@ -79,7 +81,7 @@ public class AudioRecordingIntentService extends IntentService {
 		}
 		Log.v("pitch", out);
 
-		// TODO: Write into data base
+		storeIntoDatabase(pitchs);
 
 	}
 
@@ -151,5 +153,10 @@ public class AudioRecordingIntentService extends IntentService {
 		}
 
 		return true;
+	}
+
+	public void storeIntoDatabase(ArrayList<Double> samples) {
+		SQLiteManager sqLiteManager = new SQLiteManager(this);
+		sqLiteManager.insertSample(new Sample(samples));
 	}
 }
