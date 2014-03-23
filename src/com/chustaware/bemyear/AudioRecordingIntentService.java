@@ -196,7 +196,9 @@ public class AudioRecordingIntentService extends IntentService {
 		}
 
 		Collections.sort(indexReference);
+		Collections.reverse(indexReference);
 		Collections.sort(indexSignal);
+		Collections.reverse(indexSignal);
 
 		for (int i = 0; i < indexReference.size() && i < indexSignal.size() && i < THREASHOLD; i++) {
 			if (modeReference.get(indexReference.get(i)) != modeSignal.get(indexSignal.get(i))) {
