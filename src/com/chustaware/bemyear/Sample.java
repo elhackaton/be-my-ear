@@ -15,20 +15,27 @@ public class Sample {
 	private ArrayList<Double> pattern;
 	private boolean enabled;
 	
-	public Sample(int id, String nombre, String icono, ArrayList<Double> pattern, boolean enabled) {
+	public Sample(int id, String nombre, String icon, ArrayList<Double> pattern, boolean enabled) {
 		this.id = id;
 		this.name = nombre;
-		this.icon = icono;
+		this.icon = icon;
 		this.pattern = pattern;
 		this.enabled = enabled;
 	}
 	
-	public Sample(int id, String nombre, String icono, String pattern, boolean enabled) {
+	public Sample(int id, String nombre, String icon, String pattern, boolean enabled) {
 		this.id = id;
 		this.name = nombre;
-		this.icon = icono;
+		this.icon = icon;
 		this.pattern = stringToArrayList(pattern);
 		this.enabled = enabled;
+	}
+	
+	public Sample(ArrayList<Double> pattern) {
+		this.name = "";
+		this.icon = "";
+		this.pattern = pattern;
+		this.enabled = true;
 	}
 
 	public int getId() {
