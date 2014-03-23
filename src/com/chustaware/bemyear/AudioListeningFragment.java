@@ -27,6 +27,7 @@ public class AudioListeningFragment extends Fragment {
 	private boolean mBound;
 	private ServiceConnection serviceConnection;
 	private AudioRecordingIntentService mService;
+	private boolean standby;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +49,9 @@ public class AudioListeningFragment extends Fragment {
 		};
 
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_audio_listening, container, false);
-
+		
+		standby = true;
+		
 		return rootView;
 	}
 
@@ -81,20 +84,33 @@ public class AudioListeningFragment extends Fragment {
 	}
 
 	private void setButtonClickListeners() {
-		Button btnRecord = (Button) getActivity().findViewById(R.id.btnRecord);
-		btnRecord.setOnTouchListener(new OnTouchListener() {
+		Button btnListen = (Button) getActivity().findViewById(R.id.btnListen);
+		btnListen.setOnTouchListener(new OnTouchListener() {
 
 			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				Drawable img = null;
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					Drawable imgRecordButtonPressed = getResources().getDrawable(R.drawable.record_button_pressed);
-					v.setBackgroundDrawable(imgRecordButtonPressed);
+					if (standby) {
+						img = getResources().getDrawable(R.drawable.listen_button_standby_pressed);
+					} else {
+						img = getResources().getDrawable(R.drawable.listen_button_selected);
+					}
 					startListening();
 				} else if (event.getAction() == MotionEvent.ACTION_UP) {
-					Drawable imgRecordButtonNormal = getResources().getDrawable(R.drawable.record_button_normal);
-					v.setBackgroundDrawable(imgRecordButtonNormal);
-					stopListening();
+					if (standby) {
+						img = getResources().getDrawable(R.drawable.listen_button_standby_normal);
+						startListening();
+						standby = false;
+					} else {
+						img = getResources().getDrawable(R.drawable.listen_button_normal);
+						stopListening();
+						standby = true;
+					}
+				}
+				if (img != null) {
+					v.setBackgroundDrawable(img);					
 				}
 				return false;
 			}

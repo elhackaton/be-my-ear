@@ -3,10 +3,10 @@
     android:layout_height="match_parent" >
 
     <Button
-        android:id="@+id/btnRecord"
+        android:id="@+id/btnListen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/record_button_normal" />
+        android:background="@drawable/listen_button_normal" />
 
 </RelativeLayout>
